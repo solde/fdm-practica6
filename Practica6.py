@@ -40,9 +40,15 @@ for i in range(0, iterations):
 
 # Provabilitat
 
+print("Calcul de la probabilitat")
+
 P = np.empty([4, 20])
 
 for j in range(-10, 10):
     for i in range(0, 4):
         P[i, j] = d2Y[i].subs(x, j)
         P[i, j] = P[i, j]**2
+
+xAxys = "no se"
+
+plot = plt.plot(xAxys, P[0])
