@@ -45,17 +45,16 @@ print("Calcul de la probabilitat")
 min = -1
 max = 1
 interval = 0.01
+plotRange = np.arange(min, max, interval)
 
 P = np.empty([4, int((max-min)/interval)])
 
 it = 0
-for j in np.arange(min, max, interval):
+for j in plotRange:
     for i in range(0, 4):
         aux = d2Y[i].subs(x, it)
         P[i, it] = aux**2
     it += 1
-
-
 
 for j in range(0, 4):
     count = min
@@ -64,5 +63,11 @@ for j in range(0, 4):
         f.write(str(count) + " , " + str(i) + "\n")
         count += interval
     f.close()
-    print("-------Next File-------")
 
+for j in range(0, 4):
+    plt.plot(plotRange, P[0])
+    plt.title("Probabilitat de la Ψ" + str(j+1))
+    plt.xlabel("Posició (m)")
+    plt.ylabel("Probabilitat (%)")
+    plt.draw()
+    plt.savefig("Grafic"+str(j+1)+".png")
