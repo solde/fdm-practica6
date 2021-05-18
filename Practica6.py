@@ -17,10 +17,10 @@ Y = np.empty(4, dtype=sym.core.mul.Mul)
 d2Y = np.empty(4, dtype=sym.core.mul.Mul)
 
 # Wave equations
-Y[0] = (a/np.pi**1/2)**1/2*np.e**((-a**2*x**2)/2)
-Y[1] = (a/np.pi**1/2)**1/2*2*a*np.e**((-a**2*x**2)/2)
-Y[2] = (a/np.pi**1/2)**1/2*(4*a**2*x**2-2)*np.e**((-a**2*x**2)/2)
-Y[3] = (a/np.pi**1/2)**1/2*(8*a**3*x**3-12*a*x)*np.e**((-a**2*x**2)/2)
+Y[0] = (a/(np.pi)**1/2)**1/2*np.e**((-a**2*x**2)/2)
+Y[1] = ((a/(2*((np.pi)**1/2)))**1/2)*2*x*a*np.e**((-a**2*x**2)/2)
+Y[2] = (a/(8*((np.pi)**1/2)))**1/2*((4*a**2*x**2)-2)*np.e**((-a**2*x**2)/2)
+Y[3] = (a/(48*((np.pi)**1/2)))**1/2*(8*a**3*x**3-12*a*x)*np.e**((-a**2*x**2)/2)
 
 d2Y[0] = sym.diff(sym.diff(Y[0], x) , x)
 d2Y[1] = sym.diff(sym.diff(Y[1], x) , x)
@@ -42,13 +42,27 @@ for i in range(0, iterations):
 
 print("Calcul de la probabilitat")
 
-P = np.empty([4, 20])
+min = -1
+max = 1
+interval = 0.01
 
-for j in range(-10, 10):
+P = np.empty([4, int((max-min)/interval)])
+
+it = 0
+for j in np.arange(min, max, interval):
     for i in range(0, 4):
-        P[i, j] = d2Y[i].subs(x, j)
-        P[i, j] = P[i, j]**2
+        aux = d2Y[i].subs(x, it)
+        P[i, it] = aux**2
+    it += 1
 
-xAxys = "no se"
 
-plot = plt.plot(xAxys, P[0])
+
+for j in range(0, 4):
+    count = min
+    f = open("Ona"+str(j+1)+".out", "w")
+    for i in P[j]:
+        f.write(str(count) + " , " + str(i) + "\n")
+        count += interval
+    f.close()
+    print("-------Next File-------")
+
