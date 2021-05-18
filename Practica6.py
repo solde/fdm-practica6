@@ -44,8 +44,8 @@ def prob(int i):
     print("Calcul de la probabilitat")
 
     min = -1
-    max = -0.8
-    interval = 0.00001
+    max = 1
+    interval = 0.001
     plotRange = np.arange(min, max, interval)
 
     P = np.empty([4, int((max-min)/interval)])

@@ -14,6 +14,7 @@ k = 9.9 * 10**-21
 w = 3.1 * 10**5
 
 Y = np.empty(4, dtype=sym.core.mul.Mul)
+A = np.empty(4, dtype=sym.core.mul.Mul)
 d2Y = np.empty(4, dtype=sym.core.mul.Mul)
 
 # Wave equations
@@ -31,28 +32,39 @@ d2Y[3] = sym.diff(sym.diff(Y[3], x) , x)
 print("Calcul de la gràfica de l'energia")
 
 print("Entrar el nombre de n que es volen calcular: ")
-iterations = int(input()) # number of energies that will be calculated
+it = int(input()) # number of energies that will be calculated
 
-for i in range(0, iterations):
-    n = float(input())
+E = np.empty(it)
+n = np.empty(it)
 
-    En = (n+0.5)*(h/(2*np.pi))*w
+for i in range(0, it):
+    n[i] = float(input())
+
+    E[i] = (n[i]+0.5)*(h/(2*np.pi))*w
+
+plt.plot(n, E, 'o')
+plt.title("Energia")
+plt.xlabel("n")
+plt.ylabel("Energia (J)")
+plt.draw()
+plt.savefig("Energia.png")
+plt.clf()
 
 # Provabilitat
 
 min = -1
-max = -0.8
-interval = 0.0001
+max = 1
+interval = 0.01
 plotRange = np.arange(min, max, interval)
 
-P = np.empty([4, int((max-min)/interval)+1])
+P = np.empty([4, plotRange.shape[0]])
 
-print("Calcul de la probabilitat")
+print("Calculant la probabilitat")
 
 it = 0
 for j in plotRange:
     for i in range(0, 4):
-        aux = d2Y[i].subs(x, it)
+        aux = d2Y[i].subs(x, j)
         P[i, it] = aux**2
     it += 1
 
@@ -60,7 +72,7 @@ print("Generant els .csv")
 
 for j in range(0, 4):
     count = min
-    f = open("Ona"+str(j+1)+".csv", "w")
+    f = open("OnaN"+str(j)+".csv", "w")
     for i in P[j]:
         f.write(str(count) + ", " + str(i) + "\n")
         count += interval
@@ -70,8 +82,9 @@ print("Generant les grafiques")
 
 for j in range(0, 4):
     plt.plot(plotRange, P[j])
-    plt.title("Probabilitat de la Ψ" + str(j+1))
+    plt.title("Probabilitat de la Ψ" + str(j))
     plt.xlabel("Posició (m)")
     plt.ylabel("Probabilitat (%)")
     plt.draw()
-    plt.savefig("Grafic"+str(j+1)+".png")
+    plt.savefig("OnaN"+str(j)+".png")
+    plt.clf()
