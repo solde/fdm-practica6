@@ -2,7 +2,6 @@ import sympy as sym
 import numpy as np
 import math
 import matplotlib.pyplot as plt
-import threading
 
 x = sym.Symbol('x')
 n = sym.Symbol('n')
@@ -39,43 +38,40 @@ for i in range(0, iterations):
 
     En = (n+0.5)*(h/(2*np.pi))*w
 
-# Probabilitat
-def prob(int i):
-    print("Calcul de la probabilitat")
+# Provabilitat
 
-    min = -1
-    max = -0.8
-    interval = 0.00001
-    plotRange = np.arange(min, max, interval)
+min = -1
+max = -0.8
+interval = 0.0001
+plotRange = np.arange(min, max, interval)
 
-    P = np.empty([4, int((max-min)/interval)])
+P = np.empty([4, int((max-min)/interval)+1])
 
-    it = 0
-    for j in plotRange:
+print("Calcul de la probabilitat")
+
+it = 0
+for j in plotRange:
+    for i in range(0, 4):
         aux = d2Y[i].subs(x, it)
         P[i, it] = aux**2
-        it += 1
+    it += 1
 
-    print("Generant els .csv")
+print("Generant els .csv")
 
-
+for j in range(0, 4):
     count = min
     f = open("Ona"+str(j+1)+".csv", "w")
-    for j in P[i]:
-        f.write(str(count) + ", " + str(j) + "\n")
+    for i in P[j]:
+        f.write(str(count) + ", " + str(i) + "\n")
         count += interval
     f.close()
 
-    print("Generant els plots")
+print("Generant les grafiques")
 
-    plt.plot(plotRange, P[i])
+for j in range(0, 4):
+    plt.plot(plotRange, P[j])
     plt.title("Probabilitat de la Ψ" + str(j+1))
     plt.xlabel("Posició (m)")
     plt.ylabel("Probabilitat (%)")
     plt.draw()
-    plt.savefig("Grafic"+str(i+1)+".png")
-
-for i in range(0,4):
-    thr = threading.Thread(target=prob, args=(i))
-    thr.start()
-    
+    plt.savefig("Grafic"+str(j+1)+".png")
