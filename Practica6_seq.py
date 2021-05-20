@@ -116,13 +116,14 @@ while aux != "stop":
     a = float(input("Posició x0: "))
     b = float(input("Posició x1: "))
 
-    Y2 = sym.parse_expr(str(Y[nwave])+"*"+str(Y[nwave]))
+    Y2 = sym.parse_expr(str( sym.simplify( Y[nwave] ) )+"*"+str( sym.simplify( ( Y[nwave] ) ) ))
     Y2 = sym.simplify(Y2)
     #Y1 = (a/((np.pi)**(1/2)))**(1/2)*(np.e)**((-a**(2)*x**(2))/2)
     
     #Y2 = sym.Pow(Y[nwave], 2)
     iY2 = sym.integrate(Y[nwave], (x, a ,b))
+    iY2 = sym.simplify(iY2)
     iY2d = iY2.doit()
     iY2v = iY2d.evalf()
-    print("La probabilitat de trobar la particula en X0 = " + str(a) + " i el punt X1 " + str(b) + " amb n = " + str(nwave) + " és " + str(iY2v*100) + "%.")
+    print("La probabilitat de trobar la particula en X0 = " + str(a) + " i el punt X1 " + str(b) + " amb n = " + str(nwave+1) + " és " + str(iY2v*100) + "%.")
     aux = input("Entra la n(1-4): ")
