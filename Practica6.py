@@ -10,9 +10,9 @@ n = sym.Symbol('n', nonzero=True)
 
 # Constants
 h = 6.62607004 * 10**-34    #J*s
-m = 9.10938356 * 10**-31    #Kg
+m = 1.65669827 * 10**-26    #Kg
 a = 1                       #No te unitats
-k = 9.9 * 10**-21           #N/m
+k = 3 * 9.9 * 10**-21           #N/m
 w = math.sqrt(k/m)          #rad/s
 q = 1.602177 * 10**-19      #Q
 
